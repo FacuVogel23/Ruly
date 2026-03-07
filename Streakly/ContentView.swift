@@ -9,6 +9,8 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showingAddHabitView = false
+    
     var body: some View {
         NavigationStack {
             HabitListView()
@@ -16,11 +18,14 @@ struct ContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            //AddHabitView con NavigationLink
+                            showingAddHabitView.toggle()
                         } label: {
                             Image(systemName: "plus")
                         }
                     }
+                }
+                .sheet(isPresented: $showingAddHabitView) {
+                    AddHabitView()
                 }
         }
     }
