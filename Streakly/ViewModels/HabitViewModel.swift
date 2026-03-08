@@ -31,6 +31,12 @@ class HabitViewModel {
         
         let setCompletionDays = Set(completionDays)
         
+        if setCompletionDays.contains(checkDay) == false {
+            if let previousDay = Calendar.current.date(byAdding: .day, value: -1, to: checkDay) {
+                checkDay = previousDay
+            }
+        }
+        
         while setCompletionDays.contains(checkDay) {
             streakDays += 1
             
