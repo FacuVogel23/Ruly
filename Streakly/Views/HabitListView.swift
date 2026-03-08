@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct HabitListView: View {
-    @Query private var habits: [Habit]
+    @Query(sort: \Habit.createdAt) private var habits: [Habit]
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {

@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 class Habit {
-    var id = UUID()
     var name: String
     var habitDescription: String
     var difficulty: Difficulty
