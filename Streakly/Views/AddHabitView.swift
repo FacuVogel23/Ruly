@@ -1,6 +1,6 @@
 //
 //  AddHabitView.swift
-//  Streakly
+//  Ruly
 //
 //  Created by Facundo Vogel on 07/03/2026.
 //

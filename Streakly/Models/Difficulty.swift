@@ -1,6 +1,6 @@
 //
 //  Difficulty.swift
-//  Streakly
+//  Ruly
 //
 //  Created by Facundo Vogel on 04/03/2026.
 //

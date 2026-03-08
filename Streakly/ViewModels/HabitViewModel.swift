@@ -1,6 +1,6 @@
 //
 //  HabitViewModel.swift
-//  Streakly
+//  Ruly
 //
 //  Created by Facundo Vogel on 06/03/2026.
 //

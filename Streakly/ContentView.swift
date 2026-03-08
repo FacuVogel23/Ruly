@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Streakly
+//  Ruly
 //
 //  Created by Facundo Vogel on 28/02/2026.
 //
@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             HabitListView()
-                .navigationTitle("Streakly")
+                .navigationTitle("Ruly")
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
