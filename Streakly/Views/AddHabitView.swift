@@ -18,6 +18,7 @@ struct AddHabitView: View {
     
     
     var body: some View {
+        
         NavigationStack {
             Form {
                 TextField("Insert name", text: $name)
@@ -46,6 +47,7 @@ struct AddHabitView: View {
             }
         }
     }
+    
 }
 
 #Preview {

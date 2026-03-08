@@ -14,19 +14,23 @@ struct HabitListView: View {
     
     var body: some View {
         
-        
         if habits.isEmpty {
             ContentUnavailableView("No habits yet", systemImage: "checklist", description: Text("Tap + to add your first habit"))
         } else {
             List {
                 ForEach(habits) { habit in
-                    VStack {
-                        Text(habit.name)
-                        Text(habit.habitDescription)
-                        Text(habit.difficulty.name)
+                    NavigationLink(value: habit) {
+                        VStack {
+                            Text(habit.name)
+                            Text(habit.habitDescription)
+                            Text(habit.difficulty.name)
+                        }
                     }
                 }
                 .onDelete(perform: deleteHabit)
+            }
+            .navigationDestination(for: Habit.self) { habit in
+                HabitDetailView(habit: habit)
             }
         }
     }
