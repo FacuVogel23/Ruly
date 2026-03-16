@@ -20,11 +20,7 @@ struct HabitListView: View {
             List {
                 ForEach(habits) { habit in
                     NavigationLink(value: habit) {
-                        VStack {
-                            Text(habit.name)
-                            Text(habit.habitDescription)
-                            Text(habit.difficulty.name)
-                        }
+                        HabitRowView(habit: habit)
                     }
                 }
                 .onDelete(perform: deleteHabit)

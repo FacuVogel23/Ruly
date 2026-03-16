@@ -21,11 +21,15 @@ struct AddHabitView: View {
         
         NavigationStack {
             Form {
-                TextField("Insert name", text: $name)
+                Section("Name") {
+                    TextField("e.g. Morning Run", text: $name)
+                }
                 
-                TextField("Insert description", text: $description)
+                Section("Description") {
+                    TextField("e.g. 30 minutes daily", text: $description)
+                }
                 
-                Section("Select difficulty"){
+                Section("Select difficulty") {
                     Picker("Select difficulty", selection: $difficulty) {
                         ForEach(Difficulty.allCases, id: \.self) {
                             Text($0.name)
@@ -42,7 +46,14 @@ struct AddHabitView: View {
                         modelContext.insert(habit)
                         dismiss()
                     }
+                    .foregroundStyle(name.trimmingCharacters(in: .whitespaces).isEmpty ? .secondary : Color.rulyTeal)
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
                 }
             }
         }
