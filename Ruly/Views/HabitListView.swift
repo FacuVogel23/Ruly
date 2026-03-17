@@ -25,6 +25,11 @@ struct HabitListView: View {
                 }
                 .onDelete(perform: deleteHabit)
             }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    EditButton()
+                }
+            }
             .navigationDestination(for: Habit.self) { habit in
                 HabitDetailView(habit: habit)
             }
