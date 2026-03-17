@@ -5,7 +5,7 @@
 //  Created by Facundo Vogel on 04/03/2026.
 //
 
-import Foundation
+import SwiftUI
 
 enum Difficulty: Int, CaseIterable, Codable {
     case easy = 1
@@ -22,4 +22,16 @@ enum Difficulty: Int, CaseIterable, Codable {
             return "Hard"
         }
     }
+    
+    var color: Color {
+        switch self {
+            case .easy:
+            return .green
+        case .medium:
+            return .orange
+        case .hard:
+            return .red
+        }
+    }
+    
 }

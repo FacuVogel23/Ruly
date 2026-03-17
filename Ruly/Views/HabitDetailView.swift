@@ -14,24 +14,50 @@ struct HabitDetailView: View {
     var body: some View {
         
         VStack {
-            Text(habit.name)
+            Spacer()
             
-            Text(habit.habitDescription)
-            
-            Text(habit.difficulty.name)
-            
-            Text("\(habit.completionDates.count)")
-            
-            Text("\(viewModel.habitScore(habit))")
-            
-            Text("\(viewModel.habitStreak(habit))")
-            
-            Button("Mark as complete") {
-                viewModel.completeHabit(habit)
+            VStack(spacing: 32) {
+                
+                VStack(alignment: .center, spacing: 8) {
+                    Text(habit.name)
+                        .font(.largeTitle)
+                        .bold()
+                    
+                    Text(habit.habitDescription)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    
+                    Text(habit.difficulty.name)
+                        .font(.caption)
+                        .bold()
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                        .background(habit.difficulty.color, in: Capsule())
+                }
+                
+                HabitStatsView(streak: viewModel.habitStreak(habit),
+                               score: viewModel.habitScore(habit),
+                               completions:habit.completionDates.count)
+                
+                Button {
+                    viewModel.completeHabit(habit)
+                } label: {
+                    Text(viewModel.isCompletedToday(habit) ? "Completed today ✓" : "Mark as complete")
+                }
+                .frame(maxWidth: .infinity)
+                .foregroundStyle(.white)
+                .padding()
+                .background(viewModel.isCompletedToday(habit) ? Color.secondary : Color.rulyTeal,
+                            in: RoundedRectangle(cornerRadius: 25))
+                .disabled(viewModel.isCompletedToday(habit))
+                .animation(.default, value: viewModel.isCompletedToday(habit))
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(viewModel.isCompletedToday(habit))
+            .padding()
+            
+            Spacer()
         }
+        
     }
     
 }
