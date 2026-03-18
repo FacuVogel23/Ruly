@@ -14,7 +14,7 @@ struct HabitStatsView: View {
     
     var body: some View {
         
-        HStack {
+        HStack(spacing: 12) {
             StatCardView(systemImage: "flame.fill", value: streak, label: "Streak")
             
             StatCardView(systemImage: "star.fill", value: score, label: "Score")

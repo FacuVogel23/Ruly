@@ -8,54 +8,69 @@
 import SwiftUI
 
 struct HabitDetailView: View {
+    let  viewModel: HabitViewModel
     let habit: Habit
-    @State private var viewModel = HabitViewModel()
     
     var body: some View {
         
-        VStack {
-            Spacer()
+        ZStack {
             
-            VStack(spacing: 32) {
+            Rectangle()
+                .fill(Color.rulyBackground.gradient)
+                .ignoresSafeArea()
+            
+            VStack {
+                Spacer()
                 
-                VStack(alignment: .center, spacing: 8) {
-                    Text(habit.name)
-                        .font(.largeTitle)
-                        .bold()
+                VStack(spacing: 32) {
                     
-                    Text(habit.habitDescription)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                    VStack(alignment: .center, spacing: 8) {
+                        Text(habit.name)
+                            .font(.largeTitle)
+                            .bold()
+                            .foregroundStyle(.white)
+                            .multilineTextAlignment(.center)
+                        
+                        Text(habit.habitDescription)
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.6))
+                            .multilineTextAlignment(.center)
+                        
+                        Text(habit.difficulty.name)
+                            .font(.caption)
+                            .bold()
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .background(habit.difficulty.color, in: Capsule())
+                            .padding(.top, 10)
+                    }
                     
-                    Text(habit.difficulty.name)
-                        .font(.caption)
-                        .bold()
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 4)
-                        .background(habit.difficulty.color, in: Capsule())
+                    HabitStatsView(streak: viewModel.habitStreak(habit),
+                                   score: viewModel.habitScore(habit),
+                                   completions:habit.completionDates.count)
+                    
+                    Button {
+                        if !viewModel.isCompletedToday(habit) {
+                            withAnimation {
+                                viewModel.completeHabit(habit)
+                            }
+                        }
+                    } label: {
+                        Text(viewModel.isCompletedToday(habit) ? "Completed today ✓" : "Mark as complete")
+                            .bold()
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(viewModel.isCompletedToday(habit) ? Color.rulyCard : .rulyTeal)
+                    .controlSize(.large)
+                    .opacity(viewModel.isCompletedToday(habit) ? 0.7 : 1.0)
+                    .animation(.default, value: viewModel.isCompletedToday(habit))
                 }
-                
-                HabitStatsView(streak: viewModel.habitStreak(habit),
-                               score: viewModel.habitScore(habit),
-                               completions:habit.completionDates.count)
-                
-                Button {
-                    viewModel.completeHabit(habit)
-                } label: {
-                    Text(viewModel.isCompletedToday(habit) ? "Completed today ✓" : "Mark as complete")
-                }
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(.white)
                 .padding()
-                .background(viewModel.isCompletedToday(habit) ? Color.secondary : Color.rulyTeal,
-                            in: RoundedRectangle(cornerRadius: 25))
-                .disabled(viewModel.isCompletedToday(habit))
-                .animation(.default, value: viewModel.isCompletedToday(habit))
+                
+                Spacer()
             }
-            .padding()
-            
-            Spacer()
         }
         
     }
@@ -65,5 +80,5 @@ struct HabitDetailView: View {
 #Preview {
     let habit = Habit(name: "hola", habitDescription: "hola descripcion", difficulty: .easy)
     
-    HabitDetailView(habit: habit)
+    HabitDetailView(viewModel: HabitViewModel(), habit: habit)
 }

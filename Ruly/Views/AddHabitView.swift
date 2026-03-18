@@ -20,43 +20,105 @@ struct AddHabitView: View {
     var body: some View {
         
         NavigationStack {
-            Form {
-                Section("Name") {
-                    TextField("e.g. Morning Run", text: $name)
-                }
+            ZStack {
+                Rectangle()
+                    .fill(Color.rulyBackground.gradient)
+                    .ignoresSafeArea()
                 
-                Section("Description") {
-                    TextField("e.g. 30 minutes daily", text: $description)
-                }
-                
-                Section("Select difficulty") {
-                    Picker("Select difficulty", selection: $difficulty) {
-                        ForEach(Difficulty.allCases, id: \.self) {
-                            Text($0.name)
+                ScrollView {
+                    
+                    VStack(alignment: .leading, spacing: 24) {
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Name")
+                                .font(.subheadline)
+                                .foregroundStyle(.white.opacity(0.6))
+                            
+                            ZStack(alignment: .leading) {
+                                  if name.isEmpty {
+                                      Text("e.g. Morning Run")
+                                          .foregroundStyle(.white.opacity(0.4))
+                                          .padding(.horizontal, 4)
+                                  }
+                                  TextField("", text: $name)
+                                      .foregroundStyle(.white)
+                              }
+                            .padding()
+                            .background(Color.rulyCard, in: RoundedRectangle(cornerRadius: 20))
                         }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Description")
+                                .font(.subheadline)
+                                .foregroundStyle(.white.opacity(0.6))
+                            
+                            ZStack(alignment: .leading) {
+                                  if description.isEmpty {
+                                      Text("e.g. 30 minutes daily")
+                                          .foregroundStyle(.white.opacity(0.4))
+                                          .padding(.horizontal, 4)
+                                  }
+                                  TextField("", text: $description)
+                                      .foregroundStyle(.white)
+                              }
+                            .padding()
+                            .background(Color.rulyCard, in: RoundedRectangle(cornerRadius: 20))
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Difficulty")
+                                .font(.subheadline)
+                                .foregroundStyle(.white.opacity(0.6))
+                            
+                            HStack(spacing: 10) {
+                                  ForEach(Difficulty.allCases, id: \.self) { dif in
+                                      Button(dif.name) {
+                                          difficulty = dif
+                                      }
+                                      .frame(maxWidth: .infinity)
+                                      .padding(.vertical, 5)
+                                      .background(difficulty == dif ? dif.color : Color.rulyCard,
+                                                  in: RoundedRectangle(cornerRadius: 20))
+                                      .foregroundStyle(.white)
+                                  }
+                              }
+                        }
+                        
                     }
-                    .pickerStyle(.segmented)
+                    .padding()
                 }
             }
-            .navigationTitle("New Habit")
             .toolbar {
-                ToolbarItem(placement: .status) {
+                ToolbarItem(placement: .principal) {
+                          Text("New Habit")
+                                .font(.title2)
+                                .bold()
+                                .foregroundStyle(.white)
+                      }
+                
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        let habit = Habit(name: name.trimmingCharacters(in: .whitespaces), habitDescription: description.trimmingCharacters(in: .whitespaces), difficulty: difficulty)
+                        let habit = Habit(name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+                                          habitDescription: description.trimmingCharacters(in: .whitespacesAndNewlines),
+                                          difficulty: difficulty)
                         modelContext.insert(habit)
                         dismiss()
                     }
-                    .foregroundStyle(name.trimmingCharacters(in: .whitespaces).isEmpty ? .secondary : Color.rulyTeal)
-                    .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+                    .buttonStyle(.borderedProminent)
+                    .tint(Color.rulyTeal)
+                    .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
                 
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {
                         dismiss()
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.rulyCard)
                 }
             }
         }
+        
     }
     
 }

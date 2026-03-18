@@ -14,19 +14,23 @@ struct StatCardView: View {
     
     var body: some View {
         
-        VStack {
+        VStack(spacing: 6) {
             Image(systemName: systemImage)
+                .foregroundStyle(Color.rulyTeal)
             
             Text("\(value)")
-                .font(.title)
+                .font(.title2)
                 .bold()
+                .foregroundStyle(.white)
                 .animation(.default, value: value)
             
             Text(label)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.6))
         }
         .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(Color.rulyCard, in: RoundedRectangle(cornerRadius: 12))
         
     }
 }

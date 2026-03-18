@@ -8,34 +8,40 @@
 import SwiftUI
 
 struct HabitRowView: View {
+    let viewModel: HabitViewModel
     let habit: Habit
-    @State private var viewModel = HabitViewModel()
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 5) {
+        
+        HStack(spacing: 12) {
+            Image(systemName: viewModel.isCompletedToday(habit) ? "checkmark.circle.fill" : "circle")
+                .font(.title2)
+                .foregroundStyle(viewModel.isCompletedToday(habit) ? Color.rulyTeal : .white.opacity(0.4))
+            
+            VStack(alignment: .leading, spacing: 4) {
                 Text(habit.name)
                     .font(.headline)
+                    .foregroundStyle(.white)
                 
                 Text(habit.habitDescription)
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white.opacity(0.6))
             }
             
             Spacer()
-            
-            VStack(alignment: .trailing, spacing: 5) {
-                Image(systemName: viewModel.isCompletedToday(habit) ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(viewModel.isCompletedToday(habit) ? Color.rulyTeal : Color.secondary)
                 
-                Text(habit.difficulty.name)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            Text(habit.difficulty.name)
+                .font(.caption)
+                .bold()
+                .foregroundStyle(.white)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 3)
+                .background(habit.difficulty.color, in: Capsule())
         }
+        
     }
 }
 
 #Preview {
-    HabitRowView(habit: Habit(name: "prueba", habitDescription: "descripcion prueba", difficulty: .easy))
+    HabitRowView(viewModel: HabitViewModel(), habit: Habit(name: "prueba", habitDescription: "descripcion prueba", difficulty: .easy))
 }

@@ -9,31 +9,54 @@ import SwiftData
 import SwiftUI
 
 struct HabitListView: View {
+    let  viewModel: HabitViewModel
+    
     @Query(sort: \Habit.createdAt) private var habits: [Habit]
     @Environment(\.modelContext) private var modelContext
     
+    
     var body: some View {
         
-        if habits.isEmpty {
-            ContentUnavailableView("No habits yet", systemImage: "checklist", description: Text("Tap + to add your first habit"))
-        } else {
             List {
                 ForEach(habits) { habit in
-                    NavigationLink(value: habit) {
-                        HabitRowView(habit: habit)
+                    ZStack(alignment: .leading) {
+                        NavigationLink(value: habit) { EmptyView() }
+                            .opacity(0)
+                        HabitRowView(viewModel: viewModel, habit: habit)
+                            .padding(12)
+                            .background(Color.rulyCard, in: RoundedRectangle(cornerRadius: 15))
+                            .frame(maxWidth: .infinity)
                     }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
                 }
                 .onDelete(perform: deleteHabit)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
+            .scrollContentBackground(.hidden)
+            .background(
+                Rectangle()
+                    .fill(Color.rulyBackground.gradient).ignoresSafeArea()
+            )
+            .navigationDestination(for: Habit.self) { habit in
+                HabitDetailView(viewModel: viewModel, habit: habit)
+            }
+            .overlay {
+                if habits.isEmpty {
+                    ContentUnavailableView("No habits yet", systemImage: "checklist", description: Text("Tap + to add your first habit"))
+                        .preferredColorScheme(.dark)
                 }
             }
-            .navigationDestination(for: Habit.self) { habit in
-                HabitDetailView(habit: habit)
+            .toolbar {
+                if !habits.isEmpty {
+                    ToolbarItem(placement: .topBarLeading) {
+                        EditButton()
+                            .buttonStyle(.borderedProminent)
+                            .tint(Color.rulyCard)
+                    }
+                }
             }
-        }
+        
     }
     
     private func deleteHabit(at offsets: IndexSet) {
@@ -47,17 +70,13 @@ struct HabitListView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Habit.self, configurations: config)
-
-    let habit1 = Habit(name: "Practice Guitar", habitDescription: "30 minutes daily", difficulty: .easy)
-    let habit2 = Habit(name: "Read", habitDescription: "At least 20 pages", difficulty: .medium)
-    let habit3 = Habit(name: "Work out", habitDescription: "Gym or home workout", difficulty: .hard)
-
-    container.mainContext.insert(habit1)
-    container.mainContext.insert(habit2)
-    container.mainContext.insert(habit3)
-
-    return HabitListView()
-        .modelContainer(container)
-}
+      let config = ModelConfiguration(isStoredInMemoryOnly: true)
+      let container = try! ModelContainer(for: Habit.self, configurations: config)
+      let _ = {
+          container.mainContext.insert(Habit(name: "Practice Guitar", habitDescription: "30 minutes daily", difficulty: .easy))
+          container.mainContext.insert(Habit(name: "Read", habitDescription: "At least 20 pages", difficulty: .medium))
+          container.mainContext.insert(Habit(name: "Work out", habitDescription: "Gym or home workout", difficulty: .hard))
+      }()
+      HabitListView(viewModel: HabitViewModel())
+          .modelContainer(container)
+  }
