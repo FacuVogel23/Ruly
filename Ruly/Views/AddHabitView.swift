@@ -97,12 +97,15 @@ struct AddHabitView: View {
                       }
                 
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
+                    Button {
                         let habit = Habit(name: name.trimmingCharacters(in: .whitespacesAndNewlines),
                                           habitDescription: description.trimmingCharacters(in: .whitespacesAndNewlines),
                                           difficulty: difficulty)
                         modelContext.insert(habit)
                         dismiss()
+                    } label: {
+                        Text("Save")
+                            .foregroundStyle(.white.opacity(0.8))
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(Color.rulyTeal)
@@ -110,14 +113,18 @@ struct AddHabitView: View {
                 }
                 
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .foregroundStyle(Color.rulyTeal)
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(.rulyCard)
+                    .tint(Color.rulyCard)
                 }
             }
         }
+        .preferredColorScheme(.dark)
         
     }
     

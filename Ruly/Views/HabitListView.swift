@@ -53,6 +53,7 @@ struct HabitListView: View {
                         EditButton()
                             .buttonStyle(.borderedProminent)
                             .tint(Color.rulyCard)
+                            .foregroundStyle(Color.rulyTeal)
                     }
                 }
             }

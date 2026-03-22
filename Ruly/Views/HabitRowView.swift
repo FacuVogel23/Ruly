@@ -26,6 +26,7 @@ struct HabitRowView: View {
                 Text(habit.habitDescription)
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.6))
+                    .lineLimit(1)
             }
             
             Spacer()
@@ -44,4 +45,5 @@ struct HabitRowView: View {
 
 #Preview {
     HabitRowView(viewModel: HabitViewModel(), habit: Habit(name: "prueba", habitDescription: "descripcion prueba", difficulty: .easy))
+        .preferredColorScheme(.dark)
 }

@@ -29,6 +29,7 @@ struct ContentView: View {
                     AddHabitView()
                 }
         }
+        .preferredColorScheme(.dark)
     }
 }
 
