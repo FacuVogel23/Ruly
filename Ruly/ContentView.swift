@@ -11,25 +11,41 @@ import SwiftUI
 struct ContentView: View {
     @State private var viewModel = HabitViewModel()
     @State private var showingAddHabitView = false
+    @State private var isShowingSplash = true
     
     var body: some View {
-        NavigationStack {
-            HabitListView(viewModel: viewModel)
-                .navigationTitle("Ruly")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Add habit", systemImage: "plus") {
-                            showingAddHabitView.toggle()
+        ZStack {
+            NavigationStack {
+                HabitListView(viewModel: viewModel)
+                    .navigationTitle("Ruly")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Add habit", systemImage: "plus") {
+                                showingAddHabitView.toggle()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(Color.rulyTeal)
                         }
-                        .buttonStyle(.borderedProminent)
-                        .tint(Color.rulyTeal)
                     }
-                }
-                .sheet(isPresented: $showingAddHabitView) {
-                    AddHabitView()
-                }
+                    .sheet(isPresented: $showingAddHabitView) {
+                        AddHabitView()
+                    }
+            }
+            .preferredColorScheme(.dark)
+            
+            if isShowingSplash {
+                SplashView()
+                    .transition(.opacity)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            withAnimation(.easeOut(duration: 0.5)) {
+                                isShowingSplash = false
+                            }
+                        }
+                    }
+            }
         }
-        .preferredColorScheme(.dark)
+        
     }
 }
 

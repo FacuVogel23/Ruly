@@ -22,6 +22,7 @@ struct HabitRowView: View {
                 Text(habit.name)
                     .font(.headline)
                     .foregroundStyle(.white)
+                    .lineLimit(1)
                 
                 Text(habit.habitDescription)
                     .font(.subheadline)
